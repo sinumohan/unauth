@@ -1,2 +1,5 @@
 # unauth
-Desktop app with electron
+
+npm install
+
+npm start
