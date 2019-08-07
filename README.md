@@ -1,5 +1,6 @@
 # unauth
 
-npm install
+- **To Start**
 
-npm start
+`yarn`
+`yarn dev`
