@@ -1,6 +1,10 @@
 // @flow
 import React, { Component } from 'react';
-import styles from './Home.css';
+import { Link } from 'react-router-dom';
+
+import { ButtonPrimary } from '../../core';
+import routes from '../../../constants/routes';
+import styles from './style.css';
 
 type Props = {};
 
@@ -21,12 +25,12 @@ export default class Home extends Component<Props> {
   render() {
     return (
       <div className={styles.container}>
-        <button disabled type="text" id="input" className={styles.button}>
-          Import Cookies File
-        </button>
-        <button disabled type="text" id="input" className={styles.button}>
-          Export Cookies File
-        </button>
+        <Link to={routes.IMPORT}>
+          <ButtonPrimary>Import Cookies</ButtonPrimary>
+        </Link>
+        <Link to={routes.EXPORT}>
+          <ButtonPrimary>Export Cookies</ButtonPrimary>
+        </Link>
       </div>
     );
   }

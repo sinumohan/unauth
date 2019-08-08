@@ -1,0 +1,22 @@
+.input {
+  display: block;
+  margin: 10px;
+  padding: 12px;
+  color: gray;
+  width: 800px;
+  text-align: center;
+  font-family: inherit;
+  font-size: var(--inputFontSize);
+  font-weight: normal;
+  line-height: var(--inputLineHeight);
+  border: none;
+  border-radius: 0.4rem;
+  box-shadow: 0 3px 60px rgba(0, 0, 0, 0.3), 0 15px 12px rgba(0, 0, 0, 0.22);
+  transition: box-shadow var(--transitionDuration);
+}
+
+::placeholder {
+  /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: lightgray;
+  opacity: 1; /* Firefox */
+}
