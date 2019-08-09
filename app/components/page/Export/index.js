@@ -2,42 +2,53 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 
+// import ChromeCookie from 'chrome-cookie';
 import { BackButton, ButtonPrimary, InputText } from '../../core';
 import routes from '../../../constants/routes';
 import styles from './style.css';
-
 
 class Export extends Component {
   constructor(props) {
     super(props);
 
-    this.handleBack = this.handleBack.bind(this);
+    this.state = {
+      domain: ''
+    };
+    
+    this.handleOnChange = this.handleOnChange.bind(this);
   }
 
-  onChange(fileObject) {
-    console.log('Loaded');
-    console.log(fileObject);
-    console.log(fileObject.path);
+
+  handleOnChange(event) {
+    const { currentTarget: { name, value }} = event
+    if (name && value) {
+      this.setState({
+        [name]: value
+      });
+    }
   }
 
-  onErrorMessage(errorMessage) {
-    console.log('Error');
-    console.log(errorMessage);
+
+  handleOnClick() {
+
   }
 
-  handleBack() {
-    this.props.history.goBack();
-  }
 
   render() {
+    // const CCookie = new ChromeCookie()
+    // console.log(CCookie.get('prime'));
     return (
       <div className={styles.wrapper}>
-        <BackButton onClick={this.handleBack} />
-        <div className={styles.Input}>
+        <div className={styles.back}>
+          <BackButton to={routes.HOME} />
+        </div>
+        <div>
           <InputText 
             id='domain'
             name='domain'
             placeholder='Domain (Eg: prime.com)'
+            value={this.state.domain}
+            onChange={this.handleOnChange}
           /> 
           <ButtonPrimary>Export</ButtonPrimary>
         </div>
