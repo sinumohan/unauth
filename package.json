@@ -1,12 +1,12 @@
 {
-  "name": "basic-electron-react-boilerplate",
-  "version": "0.7.0",
+  "name": "unauth",
+  "version": "1.0.0",
   "description": "Minimal and modern react+electron+webpack boilerplate",
-  "author": "Phillip Barbiero",
-  "homepage": "https://github.com/pbarbiero/basic-electron-react-boilerplate",
+  "author": "Arshad Kazmi",
+  "homepage": "https://github.com/arshadkazmi42/unatuh",
   "repository": {
     "type": "git",
-    "url": "https://github.com/pbarbiero/basic-electron-react-boilerplate.git"
+    "url": "https://github.com/arshadkazmi42/unauth.git"
   },
   "license": "MIT",
   "main": "main.js",
