@@ -1,7 +1,7 @@
 {
   "name": "unauth",
   "version": "1.0.0",
-  "description": "Minimal and modern react+electron+webpack boilerplate",
+  "description": "Desktop app with electron",
   "author": "Arshad Kazmi",
   "homepage": "https://github.com/arshadkazmi42/unatuh",
   "repository": {
