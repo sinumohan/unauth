@@ -2,5 +2,5 @@
 
 - **To Start**
 
-`yarn`
-`yarn dev`
+`npm run install`
+`npm run dev`
