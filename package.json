@@ -1,9 +1,9 @@
 {
   "name": "unauth",
-  "version": "1.0.0",
-  "description": "Desktop app with electron",
+  "version": "0.7.0",
+  "description": "Desktop Electron App",
   "author": "Arshad Kazmi",
-  "homepage": "https://github.com/arshadkazmi42/unatuh",
+  "homepage": "https://github.com/arshadkazmi42/unauth",
   "repository": {
     "type": "git",
     "url": "https://github.com/arshadkazmi42/unauth.git"
@@ -33,7 +33,7 @@
     "react-dom": "^16.0.0",
     "style-loader": "^0.19.0",
     "webpack": "^3.6.0",
-    "webpack-dev-server": "^3.8.0"
+    "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.10.1",

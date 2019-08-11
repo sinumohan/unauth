@@ -1,28 +1,26 @@
 // @flow
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
-const { ipcRenderer } = require('electron')
 
 import { BackButton, ButtonPrimary, InputText } from '../../core';
 import styles from './style.css';
 
+import { ipcRenderer } from 'electron';
 
-const exportCookieListener = () => {
-  ipcRenderer.on('export:cookies', (event, data) => {
-    console.log('Inside render', data);
-  })
-}
 
 class Export extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      domain: ''
+      domain: '',
+      errorMessage: '',
+      error: false
     };
     
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
+    this.exportCookieListener = this.exportCookieListener.bind(this);
   }
 
 
@@ -38,10 +36,27 @@ class Export extends Component {
 
   handleOnClick() {
     // Register listener
-    exportCookieListener();
+    this.exportCookieListener();
 
     // Send export event
-    ipcRenderer.send('click:export', this.state.domain);
+    ipcRenderer.send('export:start', this.state.domain);
+  }
+
+
+  exportCookieListener() {
+    ipcRenderer.on('export:complete', () => {
+      this.setState({
+        errorMessage: '',
+        error: false
+      });
+    })
+
+    ipcRenderer.on('export:failed', () => {
+      this.setState({
+        errorMessage: 'Failed to export',
+        error: true
+      });
+    });
   }
 
 
