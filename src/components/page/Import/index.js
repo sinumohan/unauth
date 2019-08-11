@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
+import { ipcRenderer } from 'electron';
 
 import { BackButton, ButtonPrimary, InputText } from '../../core';
 import styles from './style.css';
@@ -11,17 +12,11 @@ class Import extends Component {
     super(props);
 
     this.handleBack = this.handleBack.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
   }
 
-  onChange(fileObject) {
-    console.log('Loaded');
-    console.log(fileObject);
-    console.log(fileObject.path);
-  }
-
-  onErrorMessage(errorMessage) {
-    console.log('Error');
-    console.log(errorMessage);
+  handleOnClick() {
+    ipcRenderer.send('import:start');
   }
 
   handleBack() {
@@ -31,10 +26,10 @@ class Import extends Component {
   render() {
     return (
       <div className={styles.container}>
-        <BackButton onClick={this.handleBack} />
+        <BackButton to='/' onClick={this.handleBack} />
         <div className={styles.wrapper}>
           <div className={styles.Input}>
-            <ButtonPrimary>Import Cookies File</ButtonPrimary>
+            <ButtonPrimary onClick={this.handleOnClick}>Choose File</ButtonPrimary>
           </div>
         </div>
       </div>

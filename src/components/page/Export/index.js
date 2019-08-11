@@ -1,11 +1,10 @@
 // @flow
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
+import { ipcRenderer } from 'electron';
 
 import { BackButton, ButtonPrimary, InputText } from '../../core';
 import styles from './style.css';
-
-import { ipcRenderer } from 'electron';
 
 
 class Export extends Component {
