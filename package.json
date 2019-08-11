@@ -37,7 +37,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.10.1",
-    "chrome-cookie": "^1.0.1",
+    "chrome-cookie": "^1.0.3",
     "electron-rebuild": "^1.8.5",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1"

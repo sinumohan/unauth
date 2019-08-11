@@ -2,5 +2,5 @@
 
 - **To Start**
 
-`npm run install`
+`npm run setup`
 `npm run dev`
