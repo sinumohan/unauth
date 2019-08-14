@@ -7,7 +7,7 @@ import styles from './style.css';
 
 const iconStyle = {
   marginLeft: '20px',
-  marginRight: '20px'
+  marginRight: '20px',
 };
 
 const classes = {
