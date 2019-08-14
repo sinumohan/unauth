@@ -5,7 +5,7 @@ import { ipcRenderer } from 'electron';
 import Spinner from 'react-md-spinner';
 
 import { Constants, Messages, Routes } from '../../../../lib';
-import { NavBackButton, ButtonPrimary, InputText } from '../../core';
+import { NavBackButton, ButtonPrimary, InputText, TextMessage } from '../../core';
 import styles from './style.css';
 
 
@@ -15,15 +15,17 @@ class Export extends Component {
 
     this.state = {
       domain: '',
-      errorMessage: '',
-      error: false,
+      showMessage: false,
+      type: '',
+      message: '',
       loading: false
     };
 
     this.handleOnBack = this.handleOnBack.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
-    this.exportCookieListener = this.exportCookieListener.bind(this);
+    this.exportListener = this.exportListener.bind(this);
+    this.textMessageTick = this.textMessageTick.bind(this);
   }
 
 
@@ -43,7 +45,7 @@ class Export extends Component {
 
   handleOnClick() {
     // Register listener
-    this.exportCookieListener();
+    this.exportListener();
     this.setState({
       loading: true
     });
@@ -53,30 +55,44 @@ class Export extends Component {
   }
 
 
-  exportCookieListener() {
-    ipcRenderer.on(Constants.EVENTS.EXPORT.COMPLETE, () => {
+  exportListener() {
+    ipcRenderer.on(Constants.EVENTS.EXPORT.COMPLETE, (event, path) => {
       this.setState({
         loading: false,
-        errorMessage: '',
-        error: false
+        showMessage: true,
+        message: Messages.EXPORT_SUCCESS,
+        type: Constants.STATUS.SUCCESS
       });
+
+      this.textMessageTick();
     });
 
-    ipcRenderer.on(Constants.EVENTS.EXPORT.ERROR, () => {
+    ipcRenderer.on(Constants.EVENTS.EXPORT.ERROR, (event, message) => {
       this.setState({
         loading: false,
-        errorMessage: Messages.EXPORT_FAILED,
-        error: true
+        showMessage: true,
+        message: message || Messages.EXPORT_ERROR,
+        type: Constants.STATUS.ERROR
       });
+
+      this.textMessageTick();
     });
+  }
+
+  textMessageTick() {
+    this.timer = setTimeout(() => {
+      this.setState({
+          showMessage: false
+      });
+    }, 3000);
   }
 
 
   render() {
     return (
-      <div className={styles.wrapper}>
+      <div className='container'>
         <NavBackButton to={Routes.HOME} onClick={this.handleOnBack} />
-        <div className={styles.container}>
+        <div>
           <InputText
             id='domain'
             name='domain'
@@ -84,13 +100,18 @@ class Export extends Component {
             value={this.state.domain}
             onChange={this.handleOnChange}
           />
-          <ButtonPrimary onClick={this.handleOnClick}>Export</ButtonPrimary>
         </div>
-        {this.state.loading && (
-          <div className='spinner'>
-            <Spinner />
-          </div>
-        )}
+        <div className='wrapper'>
+          <ButtonPrimary onClick={this.handleOnClick}>Export</ButtonPrimary>
+          {this.state.loading && (
+            <div className='spinner'>
+              <Spinner />
+            </div>
+          )}
+          {this.state.showMessage && (
+            <TextMessage type={this.state.type}>{this.state.message}</TextMessage>
+          )}
+        </div>
       </div>
     );
   }

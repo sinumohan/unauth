@@ -42,7 +42,7 @@ class Import extends Component {
         loading: false,
         type: Constants.STATUS.ERROR,
         showMessage: true,
-        message: message
+        message: message || Messages.IMPORT_ERROR
       });
 
       this.textMessageTick();

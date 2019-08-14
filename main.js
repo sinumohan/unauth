@@ -101,10 +101,10 @@ ipcMain.on(Constants.EVENTS.EXPORT.START, async (event, arg) => {
     File.write(filename, path, JSON.stringify(data));
 
     // Sending export complete event
-    mainWindow.webContents.send(Constants.EVENTS.EXPORT.COMPLETE);
+    mainWindow.webContents.send(Constants.EVENTS.EXPORT.COMPLETE, `${path}/${filename}.json`);
   } catch (err) {
     console.error(err);
-    mainWindow.webContents.send(Constants.EVENTS.EXPORT.ERROR);
+    mainWindow.webContents.send(Constants.EVENTS.EXPORT.ERROR, err.message);
   }
 });
 
