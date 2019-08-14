@@ -4,11 +4,10 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path')
 const url = require('url')
+const ChromeCookie = require('chrome-cookie');
 
-const { choose, fileName, readCookie, writeCookie, readFile, writeFile } = require('./lib');
-
-const CHOOSE_PATH = 'saveFile';
-const CHOOSE_FILE = 'openFile';
+const CCookie = new ChromeCookie();
+const { Constants, Dialog, File, Messages } = require('./lib');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -86,37 +85,54 @@ app.on('activate', () => {
 
 
 //  Processing on export
-ipcMain.on('export:start', async (event, arg) => {
+ipcMain.on(Constants.EVENTS.EXPORT.START, async (event, arg) => {
   try {
-    const cookies = await readCookie(arg);
+    const cookies = await CCookie.getCookie(arg);
 
     // Choosing path for saving file
-    const path = choose(CHOOSE_PATH);
-    const filename = fileName(arg);
+    const path = Dialog.choose(Constants.CHOOSE_PATH);
+    const filename = File.name(arg);
+    const data = {
+      domain: arg,
+      cookies: cookies
+    };
 
     // Writing cookies to file
-    writeFile(filename, path, JSON.stringify(cookies));
+    File.write(filename, path, JSON.stringify(data));
 
     // Sending export complete event
-    mainWindow.webContents.send('export:complete');
+    mainWindow.webContents.send(Constants.EVENTS.EXPORT.COMPLETE);
   } catch (err) {
     console.error(err);
-    mainWindow.webContents.send('export:failed');
+    mainWindow.webContents.send(Constants.EVENTS.EXPORT.ERROR);
   }
 });
 
 //  Processing on import
-ipcMain.on('import:start', async () => {
+ipcMain.on(Constants.EVENTS.IMPORT.START, async () => {
   try {
-    const filePath = choose(CHOOSE_FILE);
-    let cookies = readFile(filePath[0]);
-    if (!cookies) {
-      throw 'Invalid file';
+    const filePath = Dialog.choose(Constants.CHOOSE_FILE);
+    if (!filePath) {
+      console.log(Messages.NO_FILE_SELECTED);
+      return mainWindow.webContents.send(Constants.EVENTS.IMPORT.ERROR, {
+        message: Messages.NO_FILE_SELECTED
+      });
     }
 
-    cookies = JSON.parse(cookies);
-    await writeCookie(cookies);
-    mainWindow.webContents.send('import:complete');
+    // Get raw strinfied data from file
+    let data = File.read(filePath[0]);
+    if (!data) {
+      throw Messages.NOT_VALID_DUMP;
+    }
+
+    data = JSON.parse(data);
+    let { domain, cookies } = data;
+
+    // Remove before setting cookie from dump
+    await CCookie.removeCookie(domain);
+    await CCookie.setCookie(cookies);
+
+    mainWindow.webContents.send(Constants.EVENTS.IMPORT.COMPLETE);
   } catch (err) {
     console.error(err);
   }

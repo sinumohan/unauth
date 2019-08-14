@@ -2,8 +2,10 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ipcRenderer } from 'electron';
+import Spinner from 'react-md-spinner';
 
-import { BackButton, ButtonPrimary, InputText } from '../../core';
+import { Constants, Messages, Routes } from '../../../../lib';
+import { NavBackButton, ButtonPrimary, InputText } from '../../core';
 import styles from './style.css';
 
 
@@ -14,17 +16,23 @@ class Export extends Component {
     this.state = {
       domain: '',
       errorMessage: '',
-      error: false
+      error: false,
+      loading: false
     };
-    
+
+    this.handleOnBack = this.handleOnBack.bind(this);
     this.handleOnChange = this.handleOnChange.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
     this.exportCookieListener = this.exportCookieListener.bind(this);
   }
 
 
+  handleOnBack() {
+    this.props.history.goBack();
+  }
+
   handleOnChange(event) {
-    const { currentTarget: { name, value }} = event
+    const { currentTarget: { name, value } } = event
     if (name && value) {
       this.setState({
         [name]: value
@@ -36,45 +44,53 @@ class Export extends Component {
   handleOnClick() {
     // Register listener
     this.exportCookieListener();
+    this.setState({
+      loading: true
+    });
 
     // Send export event
-    ipcRenderer.send('export:start', this.state.domain);
+    ipcRenderer.send(Constants.EVENTS.EXPORT.START, this.state.domain);
   }
 
 
   exportCookieListener() {
-    ipcRenderer.on('export:complete', () => {
+    ipcRenderer.on(Constants.EVENTS.EXPORT.COMPLETE, () => {
       this.setState({
+        loading: false,
         errorMessage: '',
         error: false
       });
-    })
+    });
 
-    ipcRenderer.on('export:failed', () => {
+    ipcRenderer.on(Constants.EVENTS.EXPORT.ERROR, () => {
       this.setState({
-        errorMessage: 'Failed to export',
+        loading: false,
+        errorMessage: Messages.EXPORT_FAILED,
         error: true
       });
     });
   }
 
 
-  render() {    
+  render() {
     return (
       <div className={styles.wrapper}>
-        <div className={styles.back}>
-          <BackButton to={'/'} />
-        </div>
-        <div>
-          <InputText 
+        <NavBackButton to={Routes.HOME} onClick={this.handleOnBack} />
+        <div className={styles.container}>
+          <InputText
             id='domain'
             name='domain'
             placeholder='Domain (Eg: prime.com)'
             value={this.state.domain}
             onChange={this.handleOnChange}
-          /> 
+          />
           <ButtonPrimary onClick={this.handleOnClick}>Export</ButtonPrimary>
         </div>
+        {this.state.loading && (
+          <div className='spinner'>
+            <Spinner />
+          </div>
+        )}
       </div>
     );
   }

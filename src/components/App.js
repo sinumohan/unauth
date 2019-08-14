@@ -3,15 +3,16 @@ import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
 import '../assets/css/App.css';
 import { ExportPage, HomePage, ImportPage } from './containers';
+import { Routes } from '../../lib';
 
 class App extends Component {
   render() {
     return (
       <BrowserRouter>
         <Switch>
-          <Route path={'/export'} component={ExportPage} />
-          <Route path={'/import'} component={ImportPage} />
-          <Route path={'/'} component={HomePage} />
+          <Route path={Routes.EXPORT} component={ExportPage} />
+          <Route path={Routes.IMPORT} component={ImportPage} />
+          <Route path={Routes.HOME} component={HomePage} />
         </Switch>
       </BrowserRouter>
     );

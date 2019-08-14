@@ -64,6 +64,7 @@ body {
 .wrapper {
   flex: 0 0 100%;
   max-width: 100%;
+  position: relative;
 }
 
 .button {
@@ -81,4 +82,10 @@ body {
   border-radius: 0.4rem;
   box-shadow: 0 2px 15px 0 rgba(126, 161, 236, 0.1);
   transition: box-shadow var(--transitionDuration);
+}
+
+.back {
+  position: absolute;
+  top: 20px;
+  left: 20px;
 }
