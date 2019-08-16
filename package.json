@@ -39,8 +39,11 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.21",
     "@fortawesome/free-solid-svg-icons": "^5.10.1",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "browser-kill": "^1.0.0",
     "chrome-cookie": "^1.0.4",
     "electron-rebuild": "^1.8.5",
+    "process-exists": "^3.1.0",
+    "process-name": "^1.0.1",
     "react-md-spinner": "^1.0.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1"

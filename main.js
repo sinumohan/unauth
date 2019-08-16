@@ -5,9 +5,11 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path')
 const url = require('url')
 const ChromeCookie = require('chrome-cookie');
+const { ProcessName, ProcessNameConstants } = require('process-name');
 
 const CCookie = new ChromeCookie();
-const { Constants, Dialog, File, Messages } = require('./lib');
+const { Browser, Constants, Dialog, File, Messages } = require('./lib');
+const { BROWSERS } = ProcessNameConstants;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -110,10 +112,32 @@ ipcMain.on(Constants.EVENTS.EXPORT.START, async (event, arg) => {
 
 //  Processing on import
 ipcMain.on(Constants.EVENTS.IMPORT.START, async () => {
+  
+  // TODO Move this to separate lib
+  const isBrowserRunning = await Browser.isRunning();  
+  if (isBrowserRunning) {
+    const browser = ProcessName.BROWSERS[BROWSERS.CHROME][process.platform];
+    const selectedOption = Dialog.message(
+      Constants.DIALOG_TYPES.WARNING, 
+      [Constants.NO, Constants.YES], 
+      Messages.ACTION_REQUIRED, 
+      `${browser} is running!!!`,
+      `Please close ${browser} before importing. Do you want us to close it for you ?`
+    );
+
+    if (selectedOption === 0) {
+      return mainWindow.webContents.send(Constants.EVENTS.IMPORT.ERROR, {
+        message: `${browser} is running! Please close it before continuing`
+      });
+    }
+
+    // Killing the process
+    await Browser.kill();
+  }
+
   try {
     const filePath = Dialog.choose(Constants.CHOOSE_FILE);
     if (!filePath) {
-      console.log(Messages.NO_FILE_SELECTED);
       return mainWindow.webContents.send(Constants.EVENTS.IMPORT.ERROR, {
         message: Messages.NO_FILE_SELECTED
       });
@@ -137,3 +161,4 @@ ipcMain.on(Constants.EVENTS.IMPORT.START, async () => {
     console.error(err);
   }
 });
+
