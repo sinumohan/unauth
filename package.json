@@ -46,6 +46,7 @@
     "process-name": "^1.0.1",
     "react-md-spinner": "^1.0.0",
     "react-router": "^5.0.1",
-    "react-router-dom": "^5.0.1"
+    "react-router-dom": "^5.0.1",
+    "strmat": "^1.0.1"
   }
 }

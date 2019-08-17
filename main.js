@@ -5,6 +5,7 @@ const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path')
 const url = require('url')
 const ChromeCookie = require('chrome-cookie');
+const Strmat = require('strmat');
 const { ProcessName, ProcessNameConstants } = require('process-name');
 
 const CCookie = new ChromeCookie();
@@ -110,6 +111,7 @@ ipcMain.on(Constants.EVENTS.EXPORT.START, async (event, arg) => {
   }
 });
 
+
 //  Processing on import
 ipcMain.on(Constants.EVENTS.IMPORT.START, async () => {
   
@@ -118,16 +120,16 @@ ipcMain.on(Constants.EVENTS.IMPORT.START, async () => {
   if (isBrowserRunning) {
     const browser = ProcessName.BROWSERS[BROWSERS.CHROME][process.platform];
     const selectedOption = Dialog.message(
-      Constants.DIALOG_TYPES.WARNING, 
-      [Constants.NO, Constants.YES], 
-      Messages.ACTION_REQUIRED, 
-      `${browser} is running!!!`,
-      `Please close ${browser} before importing. Do you want us to close it for you ?`
+      Constants.DIALOG_TYPES.WARNING,
+      [Constants.NO, Constants.YES],
+      Messages.ACTION_REQUIRED,
+      Strmat.format(Messages.BROWSER_RUNNING, { browser }),
+      Strmat.format(Messages.BROWSER_CLOSE_REQ, { browser })
     );
 
     if (selectedOption === 0) {
       return mainWindow.webContents.send(Constants.EVENTS.IMPORT.ERROR, {
-        message: `${browser} is running! Please close it before continuing`
+        message: Strmat.format(Messages.BROWSER_CLOSE_WARN, { browser })
       });
     }
 
@@ -149,8 +151,7 @@ ipcMain.on(Constants.EVENTS.IMPORT.START, async () => {
       throw Messages.NOT_VALID_DUMP;
     }
 
-    data = JSON.parse(data);
-    let { domain, cookies } = data;
+    let { domain, cookies } = JSON.parse(data);
 
     // Remove before setting cookie from dump
     await CCookie.removeCookie(domain);
