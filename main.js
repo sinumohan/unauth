@@ -25,8 +25,15 @@ if ( process.defaultApp || /[\\/]electron-prebuilt[\\/]/.test(process.execPath) 
 function createWindow() {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 1024, height: 768, show: false
+    width: 1024, 
+    height: 768, 
+    show: false,
+    title: Constants.APP_NAME
   });
+
+  mainWindow.on('page-title-updated', function(e) {
+    e.preventDefault()
+  });  
 
   // and load the index.html of the app.
   let indexPath;
