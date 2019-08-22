@@ -1,70 +1,52 @@
 {
   "name": "unauth",
-  "productName": "unauth",
   "version": "1.0.0",
-  "description": "My Electron application description",
-  "main": "src/index.js",
-  "scripts": {
-    "start": "electron-forge start",
-    "package": "electron-forge package",
-    "make": "electron-forge make",
-    "publish": "electron-forge publish",
-    "lint": "eslint --cache --color --ext .jsx,.js src"
+  "description": "Desktop Electron App",
+  "author": "Arshad Kazmi",
+  "homepage": "https://github.com/arshadkazmi42/unauth",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/arshadkazmi42/unauth.git"
   },
-  "keywords": [],
-  "author": "sinumohan",
   "license": "MIT",
-  "config": {
-    "forge": {
-      "make_targets": {
-        "win32": [
-          "squirrel"
-        ],
-        "darwin": [
-          "zip"
-        ],
-        "linux": [
-          "deb",
-          "rpm"
-        ]
-      },
-      "electronPackagerConfig": {
-        "packageManager": "yarn"
-      },
-      "electronWinstallerConfig": {
-        "name": "unauth"
-      },
-      "electronInstallerDebian": {},
-      "electronInstallerRedhat": {},
-      "github_repository": {
-        "owner": "",
-        "name": ""
-      },
-      "windowsStoreConfig": {
-        "packageName": "",
-        "name": "unauth"
-      }
-    }
-  },
-  "dependencies": {
-    "electron-compile": "^6.4.4",
-    "electron-devtools-installer": "^2.1.0",
-    "electron-squirrel-startup": "^1.0.0",
-    "react": "^15.4.1",
-    "react-dom": "^15.4.1",
-    "react-hot-loader": "^3.0.0-beta.6"
+  "main": "main.js",
+  "scripts": {
+    "setup": "npm install && ./node_modules/.bin/electron-rebuild -w sqlite3 -p",
+    "prod": "webpack --config webpack.build.config.js && electron --noDevServer .",
+    "dev": "webpack-dev-server --hot --host 0.0.0.0 --config=./webpack.dev.config.js",
+    "build": "webpack --config webpack.build.config.js",
+    "package": "webpack --config webpack.build.config.js",
+    "postpackage": "electron-packager ./ --out=./builds"
   },
   "devDependencies": {
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-es2015-classes": "^6.24.1",
-    "babel-preset-env": "^1.7.0",
+    "babel-core": "^6.24.1",
+    "babel-loader": "^7.1.5",
     "babel-preset-react": "^6.24.1",
-    "electron-forge": "^5.2.4",
-    "electron-prebuilt-compile": "4.0.0",
-    "eslint": "^3",
-    "eslint-config-airbnb": "^15",
-    "eslint-plugin-import": "^2",
-    "eslint-plugin-jsx-a11y": "^5",
-    "eslint-plugin-react": "^7"
+    "babili-webpack-plugin": "^0.1.2",
+    "css-loader": "^3.2.0",
+    "electron": "^1.7.8",
+    "electron-packager": "^9.1.0",
+    "extract-text-webpack-plugin": "^3.0.1",
+    "file-loader": "^1.1.5",
+    "html-webpack-plugin": "^2.28.0",
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "style-loader": "^0.19.0",
+    "webpack": "^3.6.0",
+    "webpack-dev-server": "^2.4.5"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.21",
+    "@fortawesome/free-solid-svg-icons": "^5.10.1",
+    "@fortawesome/react-fontawesome": "^0.1.4",
+    "browser-kill": "^1.0.0",
+    "chrome-cookie": "^1.0.5",
+    "electron-rebuild": "^1.8.5",
+    "process-exists": "^3.1.0",
+    "process-name": "^1.0.1",
+    "react-md-spinner": "^1.0.0",
+    "react-router": "^5.0.1",
+    "react-router-dom": "^5.0.1",
+    "strmat": "^1.0.1"
   }
 }

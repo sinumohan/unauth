@@ -1,5 +1,6 @@
 # unauth
 
-npm install
+- **To Start**
 
-npm start
+`npm run setup`
+`npm run dev`
