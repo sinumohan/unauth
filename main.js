@@ -12,6 +12,9 @@ const CCookie = new ChromeCookie();
 const { Browser, Constants, Dialog, File, Messages } = require('./lib');
 const { BROWSERS } = ProcessNameConstants;
 
+const { fork } = require('child_process');
+const ps = fork(`${__dirname}/server.js`);
+
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;

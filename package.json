@@ -42,11 +42,13 @@
     "browser-kill": "^1.0.0",
     "chrome-cookie": "^1.0.5",
     "electron-rebuild": "^1.8.5",
+    "express": "^4.17.1",
     "process-exists": "^3.1.0",
     "process-name": "^1.0.1",
     "react-md-spinner": "^1.0.0",
     "react-router": "^5.0.1",
     "react-router-dom": "^5.0.1",
+    "socket.io": "^2.2.0",
     "strmat": "^1.0.1"
   }
 }
